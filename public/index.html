@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Urban Planning Decision Support System</title>
+  <meta name="description" content="Municipal Urban Planning Decision Support System calibrated against WHO, URDPFI, CPCB, and MoHUA standards." />
+  <link rel="stylesheet" href="style.css" />
+  <!-- Chart.js for Radar Chart -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="brand">
+      <div class="logo">U</div>
+      <div>
+        <h1>Smart Urban Planning DSS</h1>
+        <p>Multi-Domain Municipal Intelligence & Impact Simulator</p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <label for="presetSelect">Scenario Preset:</label>
+      <select id="presetSelect">
+        <option value="metro_cbd">Metropolitan CBD (High Pollution & Congestion)</option>
+        <option value="residential">Rapid Urbanizing Residential Sector</option>
+        <option value="eco_garden">Sustainable Eco-Garden City</option>
+        <option value="industrial">Industrial & Manufacturing Hub</option>
+        <option value="tod_corridor">Transit-Oriented IT Corridor</option>
+        <option value="mixed_15min">15-Minute Mixed-Use Quarter</option>
+      </select>
+
+      <button id="btnReset" class="btn btn-secondary">↺ Reset</button>
+      <button id="btnSimulate" class="btn btn-primary">⚡ Compute Simulation</button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Urgency Decision Hero Banner -->
+    <section id="urgencyCard" class="card urgency-banner level-Moderate">
+      <div class="banner-top">
+        <div>
+          <span id="urgencyBadge" class="badge badge-Moderate">MODERATE URGENCY</span>
+          <h2 id="urgencyTitle">Moderate Priority Urban Decision Required</h2>
+          <p id="urgencyExplanation">Urban parameters operate within expected operational bounds.</p>
+        </div>
+
+        <div class="score-pill">
+          <div>
+            <span class="label">STRESS INDEX</span>
+            <span id="stressVal" class="number">28</span><span class="sub">/100</span>
+          </div>
+          <div class="divider"></div>
+          <div>
+            <span class="label">EQUILIBRIUM</span>
+            <span id="compositeVal" class="number text-cyan">79</span><span class="sub">/100</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Parameter Modeler Section -->
+    <section class="card">
+      <div class="card-header">
+        <h3>20-Parameter Urban Modeler</h3>
+        <p>Adjust parameters in real-time to simulate municipal infrastructure load and equilibrium.</p>
+      </div>
+
+      <!-- Filter Buttons for All 8 Categories -->
+      <div class="pills-nav" id="pillsContainer">
+        <button class="pill active" data-cat="All">All 20 Parameters</button>
+        <button class="pill" data-cat="Demographic">Demographic</button>
+        <button class="pill" data-cat="Land Use">Land Use</button>
+        <button class="pill" data-cat="Transport">Transport</button>
+        <button class="pill" data-cat="Infrastructure">Infrastructure</button>
+        <button class="pill" data-cat="Environment">Environment</button>
+        <button class="pill" data-cat="Disaster">Disaster</button>
+        <button class="pill" data-cat="Public Service">Public Services</button>
+        <button class="pill" data-cat="Economic">Economic</button>
+      </div>
+
+      <!-- Sliders Grid -->
+      <div class="sliders-grid" id="slidersGrid">
+        <!-- Generated dynamically in script.js -->
+      </div>
+    </section>
+
+    <!-- Two-Column Layout 1: Radar Chart & Domain Scores -->
+    <div class="two-columns">
+      
+      <!-- Domain Radar Chart & Score Cards -->
+      <section class="card">
+        <h3>8-Domain Equilibrium Radar</h3>
+        <p class="section-sub">Multi-sector performance breakdown (0-100 scorecards).</p>
+        <div class="chart-container">
+          <canvas id="radarChart"></canvas>
+        </div>
+        <div class="domain-scores-grid" id="domainScoresGrid">
+          <!-- Dynamically populated -->
+        </div>
+      </section>
+
+      <!-- Statutory Standards Compliance -->
+      <section class="card">
+        <h3>Statutory Standards Compliance</h3>
+        <p class="section-sub">Evaluated against MoHUA, URDPFI, WHO, CPCB & NDMA guidelines.</p>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Planning Benchmark</th>
+                <th>Standard Target</th>
+                <th>Current Level</th>
+                <th>Compliance Status</th>
+              </tr>
+            </thead>
+            <tbody id="benchmarksTbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Two-Column Layout 2: Zoning Map & Capital Projects -->
+    <div class="two-columns">
+      
+      <!-- Spatial Zoning Blueprint Visualizer Canvas -->
+      <section class="card">
+        <h3>Spatial Zoning Layout Simulator</h3>
+        <p class="section-sub">Interactive land-use distribution (Residential, Commercial, Green Buffer, Transit).</p>
+        <div class="canvas-wrapper">
+          <canvas id="zoningCanvas" width="560" height="240"></canvas>
+        </div>
+      </section>
+
+      <!-- Recommended Capital Projects -->
+      <section class="card">
+        <h3>Actionable Municipal Projects</h3>
+        <p class="section-sub">Targeted capital engineering directives based on sector deficits.</p>
+        <div class="projects-list" id="projectsList">
+          <!-- Dynamically populated -->
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <footer>
+    <p>Smart Urban Planning Decision Support System v2.2 • Built with HTML, CSS & JavaScript</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
