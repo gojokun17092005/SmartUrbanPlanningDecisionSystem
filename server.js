@@ -145,14 +145,54 @@ function calculateUrbanPrediction(params) {
 }
 
 // API Route
-app.post('/api/predict', (req, res) => {
+app.post('/api/predict', async (req, res) => {
   const result = calculateUrbanPrediction(req.body || {});
-  res.json(result);
+  
+  // Try fetching from ML service
+  let mlResult = null;
+  try {
+    const mlResponse = await fetch('http://127.0.0.1:8000/predict', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(result.params),
+      signal: AbortSignal.timeout(3000) // 3 seconds timeout
+    });
+    
+    if (mlResponse.ok) {
+      mlResult = await mlResponse.json();
+    } else {
+      console.warn(`ML Service returned ${mlResponse.status}`);
+      mlResult = { error: "ML Service Unavailable", model_status: "unavailable" };
+    }
+  } catch (err) {
+    console.warn('ML Service unreachable:', err.message);
+    mlResult = { error: "ML Service Unreachable", model_status: "unavailable" };
+  }
+  
+  res.json({
+    ...result,
+    mlAnalytics: mlResult
+  });
 });
 
 // Health check
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ONLINE', service: 'Smart Urban Planning DSS', timestamp: new Date().toISOString() });
+app.get('/api/health', async (req, res) => {
+  let mlHealth = { status: 'UNAVAILABLE' };
+  try {
+    const mlResponse = await fetch('http://127.0.0.1:8000/health', { signal: AbortSignal.timeout(2000) });
+    if (mlResponse.ok) {
+      mlHealth = await mlResponse.json();
+    }
+  } catch (err) {
+    // ML service down
+  }
+  
+  res.json({ 
+    status: 'ONLINE', 
+    service: 'Smart Urban Planning DSS',
+    mlService: mlHealth.status,
+    timestamp: new Date().toISOString() 
+  });
 });
 
 // Fallback to static index.html
@@ -163,5 +203,6 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`\n======================================================`);
   console.log(`🚀 Smart Urban Planning DSS running on http://localhost:${PORT}`);
+  console.log(`🧠 ML Prediction Service expected at http://127.0.0.1:8000`);
   console.log(`======================================================\n`);
 });

@@ -88,28 +88,62 @@ The decision engine evaluates 20 parameters categorized across 8 statutory urban
 
 ### Prerequisites
 * **Node.js** (v18+ recommended)
+* **Python** (v3.8+ recommended)
 * **npm** (Node Package Manager)
+* **pip** (Python Package Installer)
 
-### Step 1: Install Dependencies
+### Step 1: Install Backend & Frontend Dependencies
 Open your terminal in the project directory and run:
 ```bash
 npm install
 ```
 
-### Step 2: Start the Application Server
-Run the single-command starter:
+### Step 2: Install Machine Learning Dependencies
+Navigate to the `ml` directory and install the required Python packages:
+```bash
+cd ml
+pip install -r requirements.txt
+```
+
+### Step 3: Train the Machine Learning Model
+Generate the synthetic development dataset and train the Random Forest model:
+```bash
+cd ml/src
+python train.py
+```
+*(Note: The provided model is trained on synthetic data for development and testing purposes only. Replace `data/synthetic_urban_data.csv` with a real labeled dataset for production use.)*
+
+### Step 4: Start the Machine Learning Service
+Run the FastAPI prediction service on port 8000:
+```bash
+cd ml/src
+python predict.py
+```
+
+### Step 5: Start the Node.js Application Server
+Open a new terminal in the project root directory and run:
 ```bash
 npm start
 ```
 *(Alternatively, run `node server.js` directly)*
 
-### Step 3: Access the Web Dashboard
+### Step 6: Access the Web Dashboard
 Open your web browser and navigate to:
 ```text
 http://localhost:5000
 ```
 
 ---
+
+## 🧠 Machine Learning Architecture
+
+The system features a hybrid architecture separating rule-based and ML-based decision engines:
+
+1.  **Rule-based Engine (Node.js)**: Calculates Urban Stress Index and evaluates statutory benchmarks.
+2.  **Machine Learning Service (Python/FastAPI)**: Predicts Urban Risk (Low, Moderate, High, Critical) using a `RandomForestClassifier`.
+    *   **Data Pipeline**: Implements missing-value handling, scaling, and stratifications.
+    *   **Integration**: Node.js backend fetches predictions asynchronously via `POST /predict`. UI displays probabilities independently of the rule-based insights.
+
 
 ## 📡 REST API Documentation
 
